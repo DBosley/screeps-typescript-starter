@@ -1,6 +1,6 @@
 import * as Config from "../../config/config";
 
-import * as harvester from "./roles/harvester";
+import { Harvester } from "./roles/harvester";
 import * as upgrader from "./roles/upgrader";
 import * as builder from "./roles/builder";
 
@@ -16,8 +16,8 @@ export class CreepManager {
     public creepCount: number = 0,
     public harvesters: Creep[] = [],
     public upgraders: Creep[] = [],
-    public builders: Creep[] =[],
-  ) {  }
+    public builders: Creep[] = [],
+  ) { }
   /**
    * Initialization scripts for CreepManager module.
    *
@@ -30,7 +30,7 @@ export class CreepManager {
 
     _.each(this.creeps, (creep: Creep) => {
       if (creep.memory.role === "harvester") {
-        harvester.run(creep);
+        new Harvester(creep).run();
       }
       if (creep.memory.role === "upgrader") {
         upgrader.run(creep);
@@ -79,9 +79,9 @@ export class CreepManager {
       }
     }
 
-    this.spawnRole("harvester", 2, this.harvesters, room, spawns);
-    this.spawnRole("upgrader", 2, this.upgraders, room, spawns);
-    this.spawnRole("builder", 1, this.builders, room, spawns);
+    this.spawnRole("harvester", 3, this.harvesters, room, spawns);
+    this.spawnRole("upgrader", 3, this.upgraders, room, spawns);
+    this.spawnRole("builder", 4, this.builders, room, spawns);
   }
 
   private spawnRole(roleName: string, maxCount: number, creeps: Creep[], room: Room, spawns: StructureSpawn[]) {
